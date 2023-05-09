@@ -1,14 +1,11 @@
-from typing import Optional
-
 import strawberry
 
-from lib.models.types.seller import Seller
+from lib.models.types.verifiable_value import VerifiableValue
 
 
 @strawberry.type
 class User:
     id: str
-    email: str
-    phone_number: str
+    email: VerifiableValue
+    phone_number: VerifiableValue
     jwt: str
-    seller: Optional[Seller] = None

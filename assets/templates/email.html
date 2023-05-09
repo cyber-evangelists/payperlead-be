@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+
+        .banner {
+            height: 200px;
+            background-color: orange;
+        }
+
+        .card {
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 0 10px #888888;
+            border-radius: 8px;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            transform: translateY(-70px);
+            background-color: white;
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        .container {
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        .title {
+            font-size: 48px;
+            text-align: center;
+        }
+
+        .text-grey {
+            color: #A0A0A0;
+        }
+
+        .body-text {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner"></div>
+    <section class="container">
+        <div class="card">
+            <p class="title">{{ title }}</p>
+            <p class="text-grey body-text">{{ message }}</p>
+        </div>
+        <footer class="text-grey">
+            My Footer
+        </footer>
+    </section>
+</body>
+
+</html>

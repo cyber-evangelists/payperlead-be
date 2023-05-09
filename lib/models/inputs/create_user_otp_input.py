@@ -1,6 +1,9 @@
+from typing import Optional
+
 import strawberry
 
 
 @strawberry.input
 class CreateUserOtpInput:
-    email: str
+    email: Optional[str] = None
+    phone: Optional[str] = None

@@ -3,7 +3,7 @@ services:
   mongodb:
     restart: always
     image: "mongo:6.0.4-jammy"
-    container_name: trade-quotes-db
+    container_name: payperlead-db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=abcdefgh
@@ -14,7 +14,7 @@ services:
     build: .
     restart: always
     platform: linux/amd64
-    container_name: trade-quotes-be
+    container_name: payperlead-be
     environment:
       - DB_HOST=mongodb
       - SMTP_PWD=viceversa

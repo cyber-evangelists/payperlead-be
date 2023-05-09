@@ -10,15 +10,21 @@ async def sellerTags(tags: Optional[SellerTagInput] = None) -> TagPage:
     total = await SellerTagEntity.count()
     if tags.search:
         return TagPage(
-            items=[Tag(id=t.id, label=t.label) for t in await SellerTagEntity.find(
-                {'label': {'$regex': f'^{tags.search}.*$', '$options': 'i'}}).to_list()],
+            items=[
+                Tag(id=t.id, label=t.label)
+                for t in await SellerTagEntity.find(
+                    {"label": {"$regex": f"^{tags.search}.*$", "$options": "i"}}
+                ).to_list()
+            ],
             page=1,
             total=total,
         )
 
     return TagPage(
-        items=[Tag(id=t.id, label=t.label)
-               for t in await SellerTagEntity.find_all().to_list()],
+        items=[
+            Tag(id=t.id, label=t.label)
+            for t in await SellerTagEntity.find_all().to_list()
+        ],
         page=1,
         total=total,
     )
