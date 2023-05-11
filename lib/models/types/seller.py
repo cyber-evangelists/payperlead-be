@@ -1,11 +1,11 @@
-from typing import List
-
 import strawberry
 
-from lib.models.types.tag import Tag
+from lib.models.types.verifiable_value import VerifiableValue
 
 
 @strawberry.type
 class Seller:
     id: str
-    tags: List[Tag]
+    email: VerifiableValue
+    phone_number: VerifiableValue
+    jwt: str

@@ -1,11 +1,16 @@
-from typing import List, Optional
+from typing import Optional
 
-from beanie import Document, Link
+from beanie import Document
 
-from lib.models.entities.seller_tag_entity import SellerTagEntity
+# from lib.models.entities.seller_entity import SellerEntity
+from lib.models.entities.verifiable_entity import VerifiableEntity
 
 
 class SellerEntity(Document):
-    business_name: Optional[str] = None
-    post_code: Optional[str] = None
-    tags: Optional[List[Link[SellerTagEntity]]] = None
+    email: VerifiableEntity
+    facebook_access_token: Optional[str] = None
+    name: Optional[str] = None
+    google_id_token: Optional[str] = None
+    image_url: Optional[str] = None
+    password: Optional[str] = None
+    phone_number: VerifiableEntity

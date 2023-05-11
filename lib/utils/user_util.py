@@ -1,11 +1,12 @@
-from lib.models.entities.user_entity import UserEntity
-from lib.models.types.user import User
+from lib.models.entities.seller_entity import SellerEntity
+# from lib.models.types.user import User
+from lib.models.types.seller import Seller
 from lib.models.types.verifiable_value import VerifiableValue
 from lib.services import myjwt
 
 
-def user_entity_to_user(entity: UserEntity) -> User:
-    return User(
+def seller_entity_to_seller(entity: SellerEntity) -> Seller:
+    return Seller(
         id=entity.id,
         email=VerifiableValue(value=entity.email.value, verified=entity.email.verified),
         phone_number=VerifiableValue(

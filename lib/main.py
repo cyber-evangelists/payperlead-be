@@ -11,8 +11,8 @@ from strawberry.asgi import GraphQL
 from lib import config
 from lib.models.entities.seller_entity import SellerEntity
 from lib.models.entities.seller_tag_entity import SellerTagEntity
-from lib.models.entities.user_entity import UserEntity
-from lib.models.entities.user_entity import VerifiableEntity
+from lib.models.entities.seller_entity import SellerEntity
+from lib.models.entities.seller_entity import VerifiableEntity
 from lib.models.types.query import Query
 from lib.models.types.mutation import Mutation
 from lib.services import myjwt
@@ -27,11 +27,10 @@ app = FastAPI()
 @app.on_event("startup")
 async def start():
     await init_beanie(
-        connection_string=f"mongodb://root:abcdefgh@{config.DB_HOST}/tradequotes?authSource=admin",
+        connection_string=f"mongodb://{config.DB_HOST}/tradequotes?authSource=admin",
         document_models=[
             SellerEntity,
             SellerTagEntity,
-            UserEntity,
             VerifiableEntity,
         ],
     )
