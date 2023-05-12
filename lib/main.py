@@ -9,6 +9,7 @@ import strawberry
 from strawberry.asgi import GraphQL
 
 from lib import config
+from lib.models.entities.customer_entity import CustomerEntity
 from lib.models.entities.seller_entity import SellerEntity
 from lib.models.entities.seller_tag_entity import SellerTagEntity
 from lib.models.entities.seller_entity import SellerEntity
@@ -32,6 +33,7 @@ async def start():
             SellerEntity,
             SellerTagEntity,
             VerifiableEntity,
+            CustomerEntity
         ],
     )
     if await SellerTagEntity.count() == 0:

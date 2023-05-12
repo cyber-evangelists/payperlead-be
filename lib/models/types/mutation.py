@@ -1,7 +1,8 @@
 import strawberry
 
+from lib.models.types.customer import Customer
 from lib.models.types.seller import Seller
-from lib.resolvers import generic_resolver, user_resolver
+from lib.resolvers import generic_resolver, user_resolver, token_resolver
 from lib.user_permission import UserPermission
 
 
@@ -16,3 +17,4 @@ class Mutation:
         resolver=generic_resolver.create_support_ticket,
         permission_classes=[UserPermission],
     )
+    create_customer_session: Customer = strawberry.field(resolver=token_resolver.create_customer)
