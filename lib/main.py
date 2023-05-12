@@ -1,5 +1,5 @@
 from types import SimpleNamespace
-
+import os
 from beanie import init_beanie
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,7 +17,9 @@ from lib.models.entities.seller_entity import VerifiableEntity
 from lib.models.types.query import Query
 from lib.models.types.mutation import Mutation
 from lib.services import myjwt
+from dotenv import load_dotenv
 
+load_dotenv()
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 graphql_app = GraphQL(schema)
@@ -28,7 +30,7 @@ app = FastAPI()
 @app.on_event("startup")
 async def start():
     await init_beanie(
-        connection_string=f"mongodb://{config.DB_HOST}/tradequotes?authSource=admin",
+        connection_string=config.CONNECTION,
         document_models=[
             SellerEntity,
             SellerTagEntity,

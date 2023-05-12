@@ -2,14 +2,14 @@ import strawberry
 
 from lib.models.types.customer import Customer
 from lib.models.types.seller import Seller
-from lib.resolvers import generic_resolver, user_resolver, token_resolver
+from lib.resolvers import generic_resolver, user_resolver, token_resolver, seller_resolver
 from lib.user_permission import UserPermission
 
 
 @strawberry.type
 class Mutation:
-    create_seller: Seller = strawberry.field(resolver=user_resolver.create_seller)
-    create_seller_otp: bool = strawberry.field(resolver=user_resolver.create_seller_otp)
+    create_seller: Seller = strawberry.field(resolver=seller_resolver.create_seller)
+    create_seller_otp: bool = strawberry.field(resolver=seller_resolver.create_seller_otp)
     update_seller_verify: bool = strawberry.field(
         resolver=user_resolver.update_seller_verify, permission_classes=[UserPermission]
     )
@@ -17,4 +17,4 @@ class Mutation:
         resolver=generic_resolver.create_support_ticket,
         permission_classes=[UserPermission],
     )
-    create_customer_session: Customer = strawberry.field(resolver=token_resolver.create_customer)
+    create_customer: Customer = strawberry.field(resolver=token_resolver.create_customer)
