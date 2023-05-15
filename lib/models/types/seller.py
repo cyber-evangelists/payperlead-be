@@ -1,3 +1,5 @@
+from typing import Optional
+
 import strawberry
 
 from lib.models.types.verifiable_value import VerifiableValue
@@ -9,3 +11,8 @@ class Seller:
     email: VerifiableValue
     phone_number: VerifiableValue
     jwt: str
+    address: Optional[str] = None
+    description: Optional[str] = None
+    yell_reviews: Optional[str] = None
+    google_reviews: Optional[str] = None
+    ratings: Optional[str] = None

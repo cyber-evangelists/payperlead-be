@@ -1,23 +1,20 @@
 from types import SimpleNamespace
-import os
+
+import strawberry
 from beanie import init_beanie
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
-import strawberry
-
 from strawberry.asgi import GraphQL
 
 from lib import config
 from lib.models.entities.customer_entity import CustomerEntity
 from lib.models.entities.seller_entity import SellerEntity
-from lib.models.entities.seller_tag_entity import SellerTagEntity
-from lib.models.entities.seller_entity import SellerEntity
 from lib.models.entities.seller_entity import VerifiableEntity
-from lib.models.types.query import Query
+from lib.models.entities.seller_tag_entity import SellerTagEntity
 from lib.models.types.mutation import Mutation
+from lib.models.types.query import Query
 from lib.services import myjwt
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -35,7 +32,7 @@ async def start():
             SellerEntity,
             SellerTagEntity,
             VerifiableEntity,
-            CustomerEntity
+            CustomerEntity,
         ],
     )
     if await SellerTagEntity.count() == 0:

@@ -49,38 +49,47 @@ def all_seller_list() -> FindMany[SellerEntity]:
 
 
 async def create_seller(seller: CreateSellerInput) -> Seller:
-    db_user = await SellerEntity.find_one(SellerEntity.email.value == seller.email)
-    if not db_user:
+    try:
+        db_user = await SellerEntity.find_one(SellerEntity.email.value == seller.email)
+        if db_user:
+            raise Exception("Seller email already registered")
         user_entity = SellerEntity(
             email=VerifiableEntity(verified=False, value=seller.email),
             phone_number=VerifiableEntity(verified=False, value=seller.phone_number),
             password=mybcrypt.hash(seller.password),
         )
         await user_entity.save()
-        inserted_user = await SellerEntity.find_one(SellerEntity.email.value == seller.email)
+        inserted_user = await SellerEntity.find_one(
+            SellerEntity.email.value == seller.email
+        )
 
         return user_util.seller_entity_to_seller(inserted_user)
-
-    raise Exception("Email or phone is already in use")
+    except Exception as e:
+        raise Exception("Error: ", e)
 
 
 async def seller(seller: SellerInput) -> Seller:
-    searched_user = await SellerEntity.find_one(SellerEntity.email.value == seller.email)
+    try:
+        searched_user = await SellerEntity.find_one(
+            SellerEntity.email.value == seller.email
+        )
+        if not searched_user:
+            raise Exception("User does not exist")
 
-    if seller.email and seller.password:
-        if mybcrypt.check(seller.password, searched_user.password):
-            return user_util.seller_entity_to_seller(searched_user)
+        if seller.email and seller.password:
+            if mybcrypt.check(seller.password, searched_user.password):
+                return user_util.seller_entity_to_seller(searched_user)
 
-        raise Exception("Invalid email or password")
+            raise Exception("Invalid email or password")
 
-    if seller.email and seller.otp:
-        if seller.otp == searched_user.email.otp:
-            await searched_user.set({"otp": None})
-            return user_util.seller_entity_to_seller(searched_user)
+        if seller.email and seller.otp:
+            if seller.otp == searched_user.email.otp:
+                await searched_user.set({"otp": None})
+                return user_util.seller_entity_to_seller(searched_user)
 
-        raise Exception("Invalid email or otp")
-
-    raise Exception("Insufficient credentials")
+            raise Exception("Invalid email or otp")
+    except Exception as e:
+        raise Exception("Error: ", e)
 
 
 async def update_seller(seller: UpdateSellerInput, info: Info) -> Seller:
@@ -96,37 +105,39 @@ async def update_seller(seller: UpdateSellerInput, info: Info) -> Seller:
 
 
 async def create_seller_otp(seller: CreateSellerOtpInput) -> bool:
-    db_user = await SellerEntity.find_one(SellerEntity.email.value == seller.email)
     try:
-        if db_user:
-            gassafe_users = myjson.get_gassafe_users()
+        db_user = await SellerEntity.find_one(SellerEntity.email.value == seller.email)
+        if not db_user:
+            raise Exception("User does not exist")
+        gassafe_users = myjson.get_gassafe_users()
 
-            filtered_gassafe_users = list(
-                filter(
-                    lambda u: u["Email Address"] == seller.email,
-                    gassafe_users,
-                )
+        filtered_gassafe_users = list(
+            filter(
+                lambda u: u["Email Address"] == seller.email,
+                gassafe_users,
             )
-            file_user = (filtered_gassafe_users[0] if 0 < len(filtered_gassafe_users) else None)
+        )
+        file_user = (
+            filtered_gassafe_users[0] if 0 < len(filtered_gassafe_users) else None
+        )
 
-            if file_user:
-                otp = create_otp()
+        if file_user:
+            otp = create_otp()
 
-                if seller.email:
-                    db_user.email.otp = otp
-                    await db_user.replace()
-                    smtp.send_otp_email(otp, seller.email)
-                    return True
+            if seller.email:
+                db_user.email.otp = otp
+                await db_user.replace()
+                smtp.send_otp_email(otp, seller.email)
+                return True
 
-                if seller.phone:
-                    raise Exception("Phone OTP is not supported")
+            if seller.phone:
+                raise Exception("Phone OTP is not supported")
 
-                raise Exception("Either email or phone must be provided")
+            raise Exception("Either email or phone must be provided")
 
-            raise Exception("User is not registered to Gassafe")
+        raise Exception("User is not registered to Gassafe")
     except Exception as e:
         print("Error: ", e)
-    raise Exception("User does not exist")
 
 
 def create_otp():

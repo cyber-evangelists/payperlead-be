@@ -14,3 +14,8 @@ class SellerEntity(Document):
     image_url: Optional[str] = None
     password: Optional[str] = None
     phone_number: VerifiableEntity
+    address: Optional[str] = None
+    description: Optional[str] = None
+    yell_reviews: Optional[str] = None
+    google_reviews: Optional[str] = None
+    ratings: Optional[str] = None
