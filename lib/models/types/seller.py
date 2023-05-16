@@ -1,6 +1,7 @@
 from typing import Optional
 
 import strawberry
+from strawberry.file_uploads import Upload
 
 from lib.models.types.verifiable_value import VerifiableValue
 
@@ -16,3 +17,4 @@ class Seller:
     yell_reviews: Optional[str] = None
     google_reviews: Optional[str] = None
     ratings: Optional[str] = None
+    business_logo: Optional[Upload] = None

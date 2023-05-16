@@ -4,7 +4,6 @@ from lib.models.types.customer import Customer
 from lib.models.types.seller import Seller
 from lib.resolvers import (
     generic_resolver,
-    user_resolver,
     customer_resolver,
     seller_resolver,
 )
@@ -18,7 +17,7 @@ class Mutation:
         resolver=seller_resolver.create_seller_otp
     )
     update_seller_verify: bool = strawberry.field(
-        resolver=user_resolver.update_seller_verify, permission_classes=[UserPermission]
+        resolver=seller_resolver.update_seller_verify, permission_classes=[UserPermission]
     )
     create_support_ticket: bool = strawberry.field(
         resolver=generic_resolver.create_support_ticket,
@@ -27,3 +26,4 @@ class Mutation:
     create_customer: Customer = strawberry.field(
         resolver=customer_resolver.create_customer
     )
+    # upload_image: bool = strawberry.field(resolver=generic_resolver.upload_image)

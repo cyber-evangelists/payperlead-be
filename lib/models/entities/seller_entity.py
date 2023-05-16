@@ -19,3 +19,4 @@ class SellerEntity(Document):
     yell_reviews: Optional[str] = None
     google_reviews: Optional[str] = None
     ratings: Optional[str] = None
+    business_logo: Optional[str] = None

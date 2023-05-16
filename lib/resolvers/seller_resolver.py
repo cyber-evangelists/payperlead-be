@@ -17,7 +17,7 @@ from lib.models.types.seller import Seller
 from lib.models.types.tag import Tag
 from lib.models.types.tag_page import TagPage
 from lib.services import mybcrypt, myjson, smtp
-from lib.utils import user_util
+from lib.utils import seller_util
 
 
 async def sellerTags(tags: Optional[SellerTagInput] = None) -> TagPage:
@@ -63,7 +63,7 @@ async def create_seller(seller: CreateSellerInput) -> Seller:
             SellerEntity.email.value == seller.email
         )
 
-        return user_util.seller_entity_to_seller(inserted_user)
+        return seller_util.seller_entity_to_seller(inserted_user)
     except Exception as e:
         raise Exception("Error: ", e)
 
@@ -78,14 +78,14 @@ async def seller(seller: SellerInput) -> Seller:
 
         if seller.email and seller.password:
             if mybcrypt.check(seller.password, searched_user.password):
-                return user_util.seller_entity_to_seller(searched_user)
+                return seller_util.seller_entity_to_seller(searched_user)
 
             raise Exception("Invalid email or password")
 
         if seller.email and seller.otp:
             if seller.otp == searched_user.email.otp:
                 await searched_user.set({"otp": None})
-                return user_util.seller_entity_to_seller(searched_user)
+                return seller_util.seller_entity_to_seller(searched_user)
 
             raise Exception("Invalid email or otp")
     except Exception as e:
@@ -99,7 +99,7 @@ async def update_seller(seller: UpdateSellerInput, info: Info) -> Seller:
         if seller.password:
             await searched_user.set({"password": mybcrypt.hash(seller.password)})
 
-        return user_util.seller_entity_to_seller(searched_user)
+        return seller_util.seller_entity_to_seller(searched_user)
 
     raise Exception("Forbidden")
 

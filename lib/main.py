@@ -7,7 +7,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from strawberry.asgi import GraphQL
 
-from lib import config
+from lib import config, routers
 from lib.models.entities.customer_entity import CustomerEntity
 from lib.models.entities.seller_entity import SellerEntity
 from lib.models.entities.seller_entity import VerifiableEntity
@@ -66,6 +66,6 @@ async def auth(request: Request, call_next):
 
     return await call_next(request)
 
-
+app.include_router(routers.router)
 app.add_route("/graphql", graphql_app)
 app.add_websocket_route("/graphql", graphql_app)

@@ -2,8 +2,8 @@ import random
 
 from strawberry.types import Info
 
-from lib.services import smtp
 from lib.models.entities.seller_entity import SellerEntity
+from lib.services import smtp
 
 
 async def create_support_ticket(info: Info) -> bool:
