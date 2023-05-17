@@ -13,5 +13,7 @@ def seller_entity_to_seller(entity: SellerEntity) -> Seller:
             value=entity.phone_number.value,
             verified=entity.phone_number.verified,
         ),
+        description=entity.description,
+        business_logo=entity.business_logo,
         jwt=myjwt.encode({"userId": str(entity.id)}),
     )

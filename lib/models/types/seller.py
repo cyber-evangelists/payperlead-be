@@ -14,7 +14,7 @@ class Seller:
     jwt: str
     address: Optional[str] = None
     description: Optional[str] = None
-    yell_reviews: Optional[str] = None
-    google_reviews: Optional[str] = None
-    ratings: Optional[str] = None
+    yell_reviews: Optional[float] = None
+    google_reviews: Optional[float] = None
+    ratings: Optional[float] = None
     business_logo: Optional[Upload] = None
