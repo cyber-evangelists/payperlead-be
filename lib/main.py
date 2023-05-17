@@ -1,3 +1,4 @@
+from pathlib import Path
 from types import SimpleNamespace
 
 import strawberry
@@ -5,6 +6,7 @@ from beanie import init_beanie
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.staticfiles import StaticFiles
 from strawberry.asgi import GraphQL
 
 from lib import config, routers
@@ -22,6 +24,8 @@ schema = strawberry.Schema(query=Query, mutation=Mutation)
 graphql_app = GraphQL(schema)
 
 app = FastAPI()
+static_directory = Path("./static")
+app.mount("/static", StaticFiles(directory=static_directory), name="static")
 
 
 @app.on_event("startup")
