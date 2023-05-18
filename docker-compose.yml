@@ -4,9 +4,9 @@ services:
     restart: always
     image: "mongo:6.0.4-jammy"
     container_name: payperlead-db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=abcdefgh
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=root
+    #   - MONGO_INITDB_ROOT_PASSWORD=abcdefgh
     ports:
       - "27017:27017"
 
