@@ -26,4 +26,3 @@ class Mutation:
     create_customer: Customer = strawberry.field(
         resolver=customer_resolver.create_customer
     )
-    # upload_image: bool = strawberry.field(resolver=generic_resolver.upload_image)

@@ -15,7 +15,7 @@ from lib.models.entities.seller_tag_entity import SellerTagEntity
 from lib.models.types.mutation import Mutation
 from lib.models.types.query import Query
 from lib.services import myjwt
-from lib.services.decorators import dynamic_entities_loader
+from lib.services.dynamic_entity_loader import dynamic_entities_loader
 
 load_dotenv()
 
@@ -66,8 +66,8 @@ async def auth(request: Request, call_next):
 
 
 root_dir = os.path.join(os.path.dirname(__file__), "models", "entities")
-load_entities = dynamic_entities_loader(app, root_dir)
-load_entities()
+dynamic_entities_loader(app, root_dir)
+
 
 app.include_router(routers.router)
 app.add_route("/graphql", graphql_app)
