@@ -1,11 +1,20 @@
-from typing import List
+from typing import Optional
 
 import strawberry
+from strawberry.file_uploads import Upload
 
-from lib.models.types.tag import Tag
+from lib.models.types.verifiable_value import VerifiableValue
 
 
 @strawberry.type
 class Seller:
     id: str
-    tags: List[Tag]
+    email: VerifiableValue
+    phone_number: VerifiableValue
+    jwt: str
+    address: Optional[str] = None
+    description: Optional[str] = None
+    yell_reviews: Optional[float] = None
+    google_reviews: Optional[float] = None
+    ratings: Optional[float] = None
+    business_logo: Optional[Upload] = None

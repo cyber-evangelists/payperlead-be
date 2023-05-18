@@ -4,5 +4,5 @@ import strawberry
 
 
 @strawberry.input
-class CreateUserSellerInput:
+class CreateSellerInput:
     tags: List[int]

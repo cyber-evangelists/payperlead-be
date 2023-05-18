@@ -1,39 +1,37 @@
+import os
+from pathlib import Path
 from types import SimpleNamespace
 
+import strawberry
 from beanie import init_beanie
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response
-import strawberry
-
+from starlette.staticfiles import StaticFiles
 from strawberry.asgi import GraphQL
 
-from lib import config
-from lib.models.entities.seller_entity import SellerEntity
+from lib import config, routers
 from lib.models.entities.seller_tag_entity import SellerTagEntity
-from lib.models.entities.user_entity import UserEntity
-from lib.models.entities.user_entity import VerifiableEntity
-from lib.models.types.query import Query
 from lib.models.types.mutation import Mutation
+from lib.models.types.query import Query
 from lib.services import myjwt
+from lib.services.dynamic_entity_loader import dynamic_entities_loader
 
+load_dotenv()
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
 graphql_app = GraphQL(schema)
 
 app = FastAPI()
+static_directory = Path("./static")
+app.mount("/static", StaticFiles(directory=static_directory), name="static")
 
 
 @app.on_event("startup")
 async def start():
     await init_beanie(
-        connection_string=f"mongodb://root:abcdefgh@{config.DB_HOST}/tradequotes?authSource=admin",
-        document_models=[
-            SellerEntity,
-            SellerTagEntity,
-            UserEntity,
-            VerifiableEntity,
-        ],
+        connection_string=config.CONNECTION,
+        document_models=app.state.document_models,
     )
     if await SellerTagEntity.count() == 0:
         await SellerTagEntity.insert_many(
@@ -67,5 +65,10 @@ async def auth(request: Request, call_next):
     return await call_next(request)
 
 
+root_dir = os.path.join(os.path.dirname(__file__), "models", "entities")
+dynamic_entities_loader(app, root_dir)
+
+
+app.include_router(routers.router)
 app.add_route("/graphql", graphql_app)
 app.add_websocket_route("/graphql", graphql_app)
