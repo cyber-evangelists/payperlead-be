@@ -11,11 +11,11 @@ from starlette.staticfiles import StaticFiles
 from strawberry.asgi import GraphQL
 
 from lib import config, routers
-from lib.models.entities.seller_tag_entity import SellerTagEntity
 from lib.models.types.mutation import Mutation
 from lib.models.types.query import Query
 from lib.services import myjwt
 from lib.services.dynamic_entity_loader import dynamic_entities_loader
+from lib.init_sellers import import_sellers_from_json
 
 load_dotenv()
 
@@ -33,14 +33,7 @@ async def start():
         connection_string=config.CONNECTION,
         document_models=app.state.document_models,
     )
-    if await SellerTagEntity.count() == 0:
-        await SellerTagEntity.insert_many(
-            [
-                SellerTagEntity(label="Pressure Washing"),
-                SellerTagEntity(label="Roof Cleaning"),
-                SellerTagEntity(label="Gutter Cleaning"),
-            ]
-        )
+    await import_sellers_from_json()
     print("initialized beanie odm")
 
 

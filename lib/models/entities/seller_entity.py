@@ -2,7 +2,6 @@ from typing import Optional
 
 from beanie import Document
 
-# from lib.models.entities.seller_entity import SellerEntity
 from lib.models.entities.verifiable_entity import VerifiableEntity
 
 
@@ -20,3 +19,6 @@ class SellerEntity(Document):
     google_reviews: Optional[float] = None
     ratings: Optional[float] = None
     business_logo: Optional[str] = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None
+    town: Optional[str] = None

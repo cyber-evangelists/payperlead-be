@@ -2,6 +2,7 @@ import random
 from typing import Optional
 
 from beanie.odm.queries.find import FindMany
+import strawberry
 from strawberry.types import Info
 
 from lib.models.entities.seller_entity import SellerEntity
@@ -10,6 +11,7 @@ from lib.models.entities.verifiable_entity import VerifiableEntity
 from lib.models.inputs.create_seller_input import CreateSellerInput
 from lib.models.inputs.create_seller_otp_input import CreateSellerOtpInput
 from lib.models.inputs.seller_input import SellerInput
+from lib.models.inputs.seller_list_input import SellerListInput
 from lib.models.inputs.seller_tag_input import SellerTagInput
 from lib.models.inputs.update_seller_input import UpdateSellerInput
 from lib.models.inputs.update_seller_verify_input import UpdateSellerVerifyInput
@@ -44,8 +46,35 @@ async def sellerTags(tags: Optional[SellerTagInput] = None) -> TagPage:
     )
 
 
-def all_seller_list() -> FindMany[SellerEntity]:
-    return SellerEntity.all()
+def all_seller_list(
+    filters: Optional[SellerListInput] = strawberry.UNSET,
+) -> FindMany[SellerEntity]:
+    FIFTY_MILES = 0.84
+    if hasattr(filters, "lat") and hasattr(filters, "lng"):
+        expr = {
+            "$expr": {
+                "$and": [
+                    {"$ne": ["$lat", None]},
+                    {"$ne": ["$lng", None]},
+                    {
+                        "$lte": [
+                            {"$abs": {"$subtract": ["$lat", filters.lat]}},
+                            FIFTY_MILES,
+                        ]
+                    },
+                    {
+                        "$lte": [
+                            {"$abs": {"$subtract": ["$lng", filters.lng]}},
+                            FIFTY_MILES,
+                        ]
+                    },
+                ]
+            }
+        }
+
+        return SellerEntity.find(expr)
+
+    return SellerEntity.find()
 
 
 async def create_seller(seller: CreateSellerInput) -> Seller:

@@ -1,7 +1,9 @@
+from typing import Optional
+
 import strawberry
 
 
 @strawberry.type
 class VerifiableValue:
-    value: str
+    value: Optional[str] = None
     verified: bool

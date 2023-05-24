@@ -18,3 +18,6 @@ class Seller:
     google_reviews: Optional[float] = None
     ratings: Optional[float] = None
     business_logo: Optional[Upload] = None
+    town: Optional[str] = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None

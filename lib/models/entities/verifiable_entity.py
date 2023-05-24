@@ -4,5 +4,5 @@ from beanie import Document
 
 class VerifiableEntity(Document):
     verified: bool
-    value: str
+    value: Optional[str] = None
     otp: Optional[str] = None
