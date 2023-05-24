@@ -21,3 +21,4 @@ class Seller:
     town: Optional[str] = None
     lat: Optional[float] = None
     lng: Optional[float] = None
+    name: Optional[str] = None
